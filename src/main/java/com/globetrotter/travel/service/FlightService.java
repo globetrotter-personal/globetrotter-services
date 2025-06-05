@@ -11,11 +11,14 @@ import java.util.List;
 @Service
 public class FlightService {
     private static final Logger logger = LoggerFactory.getLogger(FlightService.class);
+    private final AmadeusApiService amadeusApiService;
 
-    public List<String> getFlights(String from, String to, LocalDate date) {
+    public FlightService(AmadeusApiService amadeusApiService) {
+        this.amadeusApiService = amadeusApiService;
+    }
+
+    public Object getFlights(String from, String to, LocalDate date) {
         logger.info("Fetching flights from {} to {} for date {}", from, to, date);
-        // TODO: Integrate with a real flight API (e.g., Amadeus)
-        // For now, return a mock response
-        return Collections.singletonList(String.format("Flight from %s to %s on %s", from, to, date));
+        return amadeusApiService.searchFlights(from, to, date);
     }
 }
