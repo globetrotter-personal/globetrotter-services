@@ -1,4 +1,3 @@
-# HealthCheckControllerTest.java
 package com.globetrotter.controller;
 
 import com.globetrotter.service.HealthCheckService;
