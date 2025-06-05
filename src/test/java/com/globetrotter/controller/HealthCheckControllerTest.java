@@ -1,6 +1,6 @@
-package com.globetrotter.controller;
+package com.globetrotter.common.controller;
 
-import com.globetrotter.service.HealthCheckService;
+import com.globetrotter.common.service.HealthCheckService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -21,10 +21,10 @@ class HealthCheckControllerTest {
     private HealthCheckService healthCheckService;
 
     @Test
-    void health_ReturnsOk() throws Exception {
-        when(healthCheckService.getHealthStatus()).thenReturn("OK");
+    void health_ReturnsUp() throws Exception {
+        when(healthCheckService.getHealthStatus()).thenReturn("UP");
         mockMvc.perform(get("/health"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("OK"));
+                .andExpect(content().string("UP"));
     }
 }

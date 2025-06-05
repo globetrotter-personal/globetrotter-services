@@ -3,6 +3,8 @@ server:
 spring:
   application:
     name: globetrotter-services
+  profiles:
+    active: local
 management:
   endpoints:
     web:
