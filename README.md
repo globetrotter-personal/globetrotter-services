@@ -5,9 +5,9 @@ A modular Spring Boot 3.x Java 17+ service for integrating with multiple AI prov
 ## Project Structure
 - `common/controller` — Shared REST controllers (e.g., health check)
 - `common/service` — Shared business logic
-- `openai/controller` — OpenAI-specific REST controllers
-- `openai/service` — OpenAI integration logic
-- `anthropic`, `deepseek`, `gemini`, `grok` — Placeholders for other AI providers
+- `ai/openai/controller` — OpenAI-specific REST controllers
+- `ai/openai/service` — OpenAI integration logic
+- `ai/anthropic`, `ai/deepseek`, `ai/gemini`, `ai/grok` — Placeholders for other AI providers
 - `model` — Domain models (future use)
 - `repository` — Data access (future use)
 - `configuration` — App configuration (future use)
@@ -74,6 +74,6 @@ curl -X POST http://localhost:8080/openai/completion \
 - API keys are loaded securely via environment variable or local properties.
 
 ## Additional Notes
-- Modular structure supports adding more AI providers easily.
+- Modular structure supports adding more AI providers easily under `ai/`.
 - Uses constructor injection, SLF4J logging, and robust error handling.
 - See code for further details on extending to other providers.
