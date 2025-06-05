@@ -1,4 +1,4 @@
-package com.globetrotter.service;
+package com.globetrotter.common.service;
 
 import org.springframework.stereotype.Service;
 
