@@ -1,3 +1,5 @@
-/Users/saratala/Projects/globetrotter-services/src/main/java/com/globetrotter/controller/HealthCheckController.java
+/Users/saratala/Projects/globetrotter-services/src/main/java/com/globetrotter/openai/controller/OpenAiController.java
+/Users/saratala/Projects/globetrotter-services/src/main/java/com/globetrotter/common/service/HealthCheckService.java
+/Users/saratala/Projects/globetrotter-services/src/main/java/com/globetrotter/common/controller/HealthCheckController.java
 /Users/saratala/Projects/globetrotter-services/src/main/java/com/globetrotter/GlobetrotterServicesApplication.java
-/Users/saratala/Projects/globetrotter-services/src/main/java/com/globetrotter/service/HealthCheckService.java
+/Users/saratala/Projects/globetrotter-services/src/main/java/com/globetrotter/openai/service/OpenAiService.java

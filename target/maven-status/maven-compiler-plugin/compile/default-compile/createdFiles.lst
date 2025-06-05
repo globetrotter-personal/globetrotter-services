@@ -1,3 +1,5 @@
-com/globetrotter/controller/HealthCheckController.class
+com/globetrotter/openai/service/OpenAiService.class
+com/globetrotter/openai/controller/OpenAiController.class
 com/globetrotter/GlobetrotterServicesApplication.class
-com/globetrotter/service/HealthCheckService.class
+com/globetrotter/common/controller/HealthCheckController.class
+com/globetrotter/common/service/HealthCheckService.class
