@@ -1,5 +1,8 @@
 package com.globetrotter.openai.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.globetrotter.travel.model.FlightSearchRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,6 +55,28 @@ public class OpenAiService {
                 return errorBody;
             }
             return ex.getMessage();
+        }
+    }
+
+    public FlightSearchRequest extractFlightSearchFields(String text) {
+        String extractionPrompt = "Extract the following fields from this travel request: From, To, From Date, To Date, Number of Passengers, Travel Class. " +
+                "Return a JSON object with keys: from, to, fromDate, toDate, numberOfPassengers, travelClass.\n" +
+                "Text: '" + text + "'";
+        String completion = getCompletion(extractionPrompt);
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode node = mapper.readTree(completion);
+            FlightSearchRequest req = new FlightSearchRequest();
+            if (node.has("from")) req.setFrom(node.get("from").asText(null));
+            if (node.has("to")) req.setTo(node.get("to").asText(null));
+            if (node.has("fromDate")) req.setFromDate(node.get("fromDate").asText(null) != null ? java.time.LocalDate.parse(node.get("fromDate").asText()) : null);
+            if (node.has("toDate")) req.setToDate(node.get("toDate").asText(null) != null ? java.time.LocalDate.parse(node.get("toDate").asText()) : null);
+            if (node.has("numberOfPassengers")) req.setNumberOfPassengers(node.get("numberOfPassengers").asInt(1));
+            if (node.has("travelClass")) req.setTravelClass(node.get("travelClass").asText(null));
+            return req;
+        } catch (Exception e) {
+            logger.error("Failed to parse OpenAI extraction response: {}", e.getMessage(), e);
+            return null;
         }
     }
 }
