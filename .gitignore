@@ -63,3 +63,8 @@ build/
 # Application properties with sensitive data
 application-local.yml
 application-local.properties
+
+target/
+
+src/test/resources/application-local.yml
+src/test/resources/application-local.properties

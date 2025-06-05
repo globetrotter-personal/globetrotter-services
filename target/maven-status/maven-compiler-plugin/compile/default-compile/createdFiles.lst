@@ -1,8 +1,0 @@
-com/globetrotter/openai/service/OpenAiService.class
-com/globetrotter/openai/controller/OpenAiController.class
-com/globetrotter/travel/service/AmadeusApiService.class
-com/globetrotter/GlobetrotterServicesApplication.class
-com/globetrotter/travel/service/FlightService.class
-com/globetrotter/common/controller/HealthCheckController.class
-com/globetrotter/travel/controller/FlightController.class
-com/globetrotter/common/service/HealthCheckService.class
