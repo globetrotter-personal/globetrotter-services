@@ -62,4 +62,4 @@ build/
 
 # Application properties with sensitive data
 application-local.yml
-application-local.properties
+application-local.propertiestarget/
