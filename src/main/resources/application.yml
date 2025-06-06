@@ -15,3 +15,6 @@ amadeus:
     clientId: ${AMADEUS_API_CLIENTID}
     clientSecret: ${AMADEUS_API_CLIENTSECRET}
     baseUrl: ${AMADEUS_API_BASEURL:https://test.api.amadeus.com}
+openai:
+  api:
+    key: ${OPENAI_API_KEY}
