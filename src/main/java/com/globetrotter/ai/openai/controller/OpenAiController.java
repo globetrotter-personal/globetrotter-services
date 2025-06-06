@@ -7,6 +7,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/openai")
 public class OpenAiController {
@@ -18,8 +20,14 @@ public class OpenAiController {
     }
 
     @PostMapping("/completion")
-    public ResponseEntity<String> getCompletion(@RequestBody String prompt) {
-        logger.info("Received OpenAI completion request");
+    public ResponseEntity<String> getCompletion(@RequestBody Map<String, Object> requestBody) {
+        logger.info("Received OpenAI completion request: {}", requestBody);
+        
+        String prompt = requestBody.get("prompt") != null ? requestBody.get("prompt").toString() : "";
+        Integer maxTokens = requestBody.get("maxTokens") != null ? 
+            Integer.parseInt(requestBody.get("maxTokens").toString()) : 100;
+        
+        logger.info("Processing prompt: {}, maxTokens: {}", prompt, maxTokens);
         String response = openAiService.getCompletion(prompt);
         
         // Check if the response is an error response

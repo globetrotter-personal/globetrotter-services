@@ -79,6 +79,49 @@ docker-compose up --build
   OPENAI_API_KEY=sk-... docker compose up -d
   ```
 
+## Docker Deployment
+The application is containerized using Docker for easy deployment:
+
+1. **Build the JAR file:**
+   ```bash
+   mvn clean install
+   ```
+
+2. **Build the Docker image:**
+   ```bash
+   docker compose build
+   ```
+
+3. **Run the Docker container:**
+   ```bash
+   docker compose up -d
+   ```
+
+4. **Check the health endpoint:**
+   ```bash
+   curl http://localhost:8080/common/health
+   ```
+
+5. **Test the OpenAI completion endpoint:**
+   ```bash
+   curl -X POST http://localhost:8080/openai/completion \
+     -H "Content-Type: application/json" \
+     -d '{"prompt": "Hello, how are you?", "maxTokens": 50}'
+   ```
+
+6. **Stop the Docker container:**
+   ```bash
+   docker compose down
+   ```
+
+## Configuration Files
+- `application.yml` - Main configuration properties
+- `application-local.properties` - Local development properties (not in git)
+- `application-docker.properties` - Docker-specific properties
+
+## SSL/TLS Configuration
+The application includes special handling for SSL/TLS in Docker containers to properly connect to external APIs.
+
 ## Testing
 ```sh
 mvn test

@@ -24,10 +24,18 @@ public class OpenAiService {
     @Value("${openai.api.url:https://api.openai.com/v1/completions}")
     private String apiUrl;
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
+
+    public OpenAiService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     public String getCompletion(String prompt) {
-        logger.info("Calling OpenAI API for prompt: {}", prompt);
+        return getCompletion(prompt, 100);
+    }
+
+    public String getCompletion(String prompt, int maxTokens) {
+        logger.info("Calling OpenAI API for prompt: {}, maxTokens: {}", prompt, maxTokens);
         if (apiKey == null || apiKey.isBlank()) {
             logger.error("OpenAI API key is missing. Set openai.api.key in properties or OPENAI_API_KEY env variable.");
             return "{\"error\":\"OpenAI API key is missing.\"}";
@@ -39,7 +47,7 @@ public class OpenAiService {
         Map<String, Object> requestBody = new java.util.HashMap<>();
         requestBody.put("model", "gpt-3.5-turbo-instruct");
         requestBody.put("prompt", prompt);
-        requestBody.put("max_tokens", 100);
+        requestBody.put("max_tokens", maxTokens);
 
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
         try {
