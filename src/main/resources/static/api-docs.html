@@ -25,6 +25,9 @@
             padding: 1rem;
             margin-bottom: 2rem;
             border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .navbar h1 {
             margin: 0;
@@ -39,6 +42,19 @@
             margin-bottom: 20px;
             max-height: calc(100vh - 40px);
             overflow-y: auto;
+        }
+        .toc h5 {
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .toc .nav-link {
+            padding: 5px 0;
+            color: #333;
+            transition: color 0.3s ease;
+        }
+        .toc .nav-link:hover {
+            color: #6772e5;
+            text-decoration: none;
         }
         .content {
             padding: 0 20px;
@@ -108,9 +124,22 @@
             .toc {
                 width: 250px;
                 margin-right: 30px;
+                display: block;
             }
             .content {
                 flex-grow: 1;
+            }
+        }
+        
+        @media (max-width: 991px) {
+            .toc {
+                width: 100%;
+                margin-bottom: 30px;
+                border: 1px solid #e9ecef;
+            }
+            #toc-toggle {
+                font-size: 0.9rem;
+                padding: 5px 10px;
             }
         }
     </style>
@@ -118,6 +147,9 @@
 <body>
     <div class="navbar">
         <h1>Globetrotter Services API Reference</h1>
+        <button id="toc-toggle" class="btn btn-light d-lg-none">
+            <span id="toc-toggle-text">Show Table of Contents</span>
+        </button>
     </div>
     
     <div class="container">
@@ -487,16 +519,47 @@ fetch('https://api.globetrotter-services.com/openai/completion', {
                 });
             });
             
+            // Toggle Table of Contents for mobile devices
+            const tocToggleBtn = document.getElementById('toc-toggle');
+            const tocElement = document.querySelector('.toc');
+            const tocToggleText = document.getElementById('toc-toggle-text');
+            
+            if (tocToggleBtn) {
+                tocToggleBtn.addEventListener('click', () => {
+                    if (tocElement.classList.contains('d-none')) {
+                        // Show TOC
+                        tocElement.classList.remove('d-none');
+                        tocElement.classList.add('d-block');
+                        tocToggleText.textContent = 'Hide Table of Contents';
+                    } else {
+                        // Hide TOC
+                        tocElement.classList.remove('d-block');
+                        tocElement.classList.add('d-none');
+                        tocToggleText.textContent = 'Show Table of Contents';
+                    }
+                });
+            }
+            
             // Smooth scrolling for navigation links
             document.querySelectorAll('#toc-nav a').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
+                    const targetId = this.getAttribute('href');
+                    const target = document.querySelector(targetId);
                     if (target) {
                         window.scrollTo({
                             top: target.offsetTop - 20,
                             behavior: 'smooth'
                         });
+                        
+                        // Hide TOC on mobile after clicking a link
+                        if (window.innerWidth < 992 && tocElement && !tocElement.classList.contains('d-none')) {
+                            tocElement.classList.remove('d-block');
+                            tocElement.classList.add('d-none');
+                            if (tocToggleText) {
+                                tocToggleText.textContent = 'Show Table of Contents';
+                            }
+                        }
                     }
                 });
             });
