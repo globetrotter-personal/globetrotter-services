@@ -19,3 +19,14 @@ openai:
   api:
     key: ${OPENAI_API_KEY}
     model: ${OPENAI_API_MODEL:gpt-3.5-turbo-instruct}
+
+# OpenAPI/Swagger configuration
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+    docExpansion: none
+  show-actuator: true
