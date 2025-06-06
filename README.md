@@ -31,6 +31,28 @@ A modular Spring Boot 3.x Java 17+ service for integrating with multiple AI prov
        ```
      - This file is in `.gitignore` and will not be committed.
 
+## Environment Variables and Secrets Management
+
+- All sensitive configuration (API keys, client secrets) is now managed via environment variables using a `.env` file at the project root.
+- **Do not commit your real `.env` file to git!**
+- Instead, use the provided `.env-template` file as a reference for required variables. Copy it to `.env` and fill in your real values:
+
+```sh
+cp .env-template .env
+# Edit .env and add your secrets
+```
+
+### Example `.env-template`
+```
+OPENAI_API_KEY=
+AMADEUS_API_CLIENTID=
+AMADEUS_API_CLIENTSECRET=
+AMADEUS_API_BASEURL=https://test.api.amadeus.com
+```
+
+- The application no longer uses `application-local.properties` for secrets. That file has been removed and is now ignored by git.
+- Docker Compose and Spring Boot will automatically load variables from `.env` if present.
+
 ## Running Locally
 ```sh
 # 1. Set up your OpenAI API key (choose one method):
@@ -48,9 +70,9 @@ mvn spring-boot:run -Dspring-boot.run.profiles=local
 
 ## Running with Docker
 ```sh
-docker compose build
-docker compose up -d
+docker-compose up --build
 ```
+- Make sure your `.env` file is present in the project root before running Docker Compose.
 - The container will use the `OPENAI_API_KEY` environment variable.
 - Example:
   ```sh
@@ -77,3 +99,10 @@ curl -X POST http://localhost:8080/openai/completion \
 - Modular structure supports adding more AI providers easily under `ai/`.
 - Uses constructor injection, SLF4J logging, and robust error handling.
 - See code for further details on extending to other providers.
+
+## Summary of Recent Changes
+- All secrets moved from `application-local.properties` to `.env` (not tracked by git).
+- `.env-template` added for onboarding and documentation.
+- `application-local.properties` removed and added to `.gitignore`.
+- Updated `.gitignore` to include `.env`, `.env-template`, and `application-local.properties`.
+- Updated documentation for secure secret management and local/Docker usage.
