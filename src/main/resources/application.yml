@@ -10,6 +10,8 @@ management:
     web:
       exposure:
         include: health,info
-amadeus.api.clientId=${AMADEUS_API_CLIENTID}
-amadeus.api.clientSecret=${AMADEUS_API_CLIENTSECRET}
-amadeus.api.baseUrl=${AMADEUS_API_BASEURL:https://test.api.amadeus.com}
+amadeus:
+  api:
+    clientId: ${AMADEUS_API_CLIENTID}
+    clientSecret: ${AMADEUS_API_CLIENTSECRET}
+    baseUrl: ${AMADEUS_API_BASEURL:https://test.api.amadeus.com}

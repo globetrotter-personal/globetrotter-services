@@ -49,11 +49,22 @@ public class OpenAiService {
         } catch (Exception ex) {
             logger.error("OpenAI API error: {}", ex.getMessage(), ex);
             if (ex instanceof org.springframework.web.client.HttpStatusCodeException) {
-                String errorBody = ((org.springframework.web.client.HttpStatusCodeException) ex).getResponseBodyAsString();
+                org.springframework.web.client.HttpStatusCodeException httpEx = 
+                    (org.springframework.web.client.HttpStatusCodeException) ex;
+                String errorBody = httpEx.getResponseBodyAsString();
+                int statusCode = httpEx.getStatusCode().value();
                 logger.error("OpenAI error response body: {}", errorBody);
+                
+                // If there's no response body, create a JSON error response
+                if (errorBody == null || errorBody.isBlank()) {
+                    return String.format("{\"error\":\"OpenAI API error - HTTP %d\",\"message\":\"%s\"}", 
+                        statusCode, httpEx.getStatusText());
+                }
                 return errorBody;
             }
-            return ex.getMessage();
+            // For non-HTTP exceptions, return a structured error
+            return String.format("{\"error\":\"OpenAI API call failed\",\"message\":\"%s\"}", 
+                ex.getMessage().replace("\"", "\\\""));
         }
     }
 
