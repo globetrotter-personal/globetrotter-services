@@ -2,6 +2,10 @@
 
 A modular Spring Boot 3.x Java 17+ service for integrating with multiple AI providers (OpenAI, DeepSeek, Anthropic, Gemini, Grok). Includes health check, secure secret management, Dockerization, and OpenAI completions endpoint.
 
+## API Documentation
+
+For detailed API documentation, see [API_REFERENCE.md](API_REFERENCE.md).
+
 ## Project Structure
 - `common/controller` — Shared REST controllers (e.g., health check)
 - `common/service` — Shared business logic
