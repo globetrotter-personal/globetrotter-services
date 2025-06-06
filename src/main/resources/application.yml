@@ -19,6 +19,10 @@ openai:
   api:
     key: ${OPENAI_API_KEY}
     model: ${OPENAI_API_MODEL:gpt-3.5-turbo-instruct}
+deepseek:
+  api:
+    key: ${DEEPSEEK_API_KEY}
+    model: ${DEEPSEEK_API_MODEL:deepseek-chat}
 
 # OpenAPI/Swagger configuration
 springdoc:
