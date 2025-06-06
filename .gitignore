@@ -64,6 +64,8 @@ build/
 application-local.yml
 application-local.properties
 
+.env
+
 target/
 
 src/test/resources/application-local.yml
