@@ -23,6 +23,9 @@ public class OpenAiService {
 
     @Value("${openai.api.url:https://api.openai.com/v1/completions}")
     private String apiUrl;
+    
+    @Value("${openai.api.model:gpt-3.5-turbo-instruct}")
+    private String model;
 
     private final RestTemplate restTemplate;
 
@@ -45,7 +48,7 @@ public class OpenAiService {
         headers.setBearerAuth(apiKey);
 
         Map<String, Object> requestBody = new java.util.HashMap<>();
-        requestBody.put("model", "gpt-3.5-turbo-instruct");
+        requestBody.put("model", model);
         requestBody.put("prompt", prompt);
         requestBody.put("max_tokens", maxTokens);
 
