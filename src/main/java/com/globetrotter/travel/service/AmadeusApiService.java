@@ -1,5 +1,6 @@
 package com.globetrotter.travel.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +14,7 @@ import java.util.*;
 @Service
 public class AmadeusApiService {
     private static final Logger logger = LoggerFactory.getLogger(AmadeusApiService.class);
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Value("${amadeus.api.clientId}")
     private String clientId;
@@ -57,22 +59,53 @@ public class AmadeusApiService {
     }
 
     public Object searchFlights(String from, String to, LocalDate date) {
+        return searchFlights(from, to, date, 1, null);
+    }
+
+    public Object searchFlights(String from, String to, LocalDate date, int numberOfPassengers, String travelClass) {
         String token = getAccessToken();
         if (token == null) {
             return Collections.singletonMap("error", "Unable to authenticate with Amadeus API");
         }
-        String url = baseUrl + "/v2/shopping/flight-offers" +
-                "?originLocationCode=" + from +
-                "&destinationLocationCode=" + to +
-                "&departureDate=" + date +
-                "&adults=1";
+        logger.debug("Amadeus API From: {}", from.toString());
+        logger.debug("Amadeus API To: {}", to.toString());
+        System.out.println("Amadeus API From: " + from);
+        System.out.println("Amadeus API To: " + to);
+        // Validate airport codes
+        if (from == null || from.length() != 3) {
+            return Collections.singletonMap("error", "Invalid origin airport code: " + from);
+        }
+        if (to == null || to.length() != 3) {
+            return Collections.singletonMap("error", "Invalid destination airport code: " + to);
+        }
+
+        StringBuilder urlBuilder = new StringBuilder(baseUrl)
+                .append("/v2/shopping/flight-offers")
+                .append("?originLocationCode=").append(from)
+                .append("&destinationLocationCode=").append(to)
+                .append("&departureDate=").append(date)
+                .append("&max=2")
+                .append("&adults=").append(numberOfPassengers);
+
+        if (travelClass != null && !travelClass.isEmpty()) {
+            urlBuilder.append("&travelClass=").append(travelClass);
+        }
+        logger.debug("Amadeus API URL: {}", urlBuilder.toString());
+        String url = urlBuilder.toString();
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(token);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         HttpEntity<Void> entity = new HttpEntity<>(headers);
+
         try {
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
-            return response.getBody();
+            String responseBody = response.getBody();
+            System.out.println("Received response from Amadeus API: " + responseBody);
+
+            if (responseBody != null) {
+                return objectMapper.readValue(responseBody, Map.class);
+            }
+            return Collections.singletonMap("error", "Empty response from Amadeus API");
         } catch (Exception ex) {
             logger.error("Amadeus flight search error: {}", ex.getMessage(), ex);
             return Collections.singletonMap("error", ex.getMessage());

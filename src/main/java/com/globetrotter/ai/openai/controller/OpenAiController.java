@@ -1,6 +1,7 @@
 package com.globetrotter.ai.openai.controller;
 
 import com.globetrotter.ai.openai.service.OpenAiService;
+import com.globetrotter.travel.model.FlightSearchRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -17,8 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/openai")
-@Tag(name = "OpenAI", description = "OpenAI Integration Endpoints")
+@RequestMapping("/ai/openai")
+@Tag(name = "OpenAI", description = "OpenAI integration endpoints")
 public class OpenAiController {
     private static final Logger logger = LoggerFactory.getLogger(OpenAiController.class);
     private final OpenAiService openAiService;
@@ -88,5 +89,12 @@ public class OpenAiController {
             .ok()
             .contentType(MediaType.APPLICATION_JSON)
             .body(response);
+    }
+
+    @Operation(summary = "Extract flight search fields from text")
+    @PostMapping("/extract-flight-fields")
+    public FlightSearchRequest extractFlightFields(@RequestBody String text) {
+        logger.error("=== OpenAiController.extractFlightFields called ===");
+        return openAiService.extractFlightSearchFields(text);
     }
 }

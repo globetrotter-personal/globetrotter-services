@@ -1,3 +1,8 @@
+logging:
+  level:
+    com.globetrotter: DEBUG
+    org.springframework: INFO
+
 server:
   port: 8080
 spring:
@@ -12,16 +17,16 @@ management:
         include: health,info
 amadeus:
   api:
-    clientId: ${AMADEUS_API_CLIENTID}
-    clientSecret: ${AMADEUS_API_CLIENTSECRET}
+    clientId: ${AMADEUS_API_CLIENTID:}
+    clientSecret: ${AMADEUS_API_CLIENTSECRET:}
     baseUrl: ${AMADEUS_API_BASEURL:https://test.api.amadeus.com}
 openai:
   api:
-    key: ${OPENAI_API_KEY}
     model: ${OPENAI_API_MODEL:gpt-3.5-turbo-instruct}
+
 deepseek:
   api:
-    key: ${DEEPSEEK_API_KEY}
+    key: ${DEEPSEEK_API_KEY:}
     model: ${DEEPSEEK_API_MODEL:deepseek-chat}
 
 # OpenAPI/Swagger configuration
