@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: globetrotter-services:0.0.1-SNAPSHOT
+    container_name: globetrotter-services
     ports:
       - "8080:8080"
     environment:
@@ -19,22 +21,15 @@ services:
       - LOGGING_LEVEL_ROOT=INFO
       - LOGGING_PATTERN_CONSOLE=%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
     restart: unless-stopped
+    networks:
+      - globetrotter-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
-  globetrotter-bff:
-    build:
-      context: ../globetrotter-bff
-      dockerfile: Dockerfile
-    ports:
-      - "8081:8081"
-    env_file:
-      - .env
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
-      - AMADEUS_API_CLIENTID=${AMADEUS_API_CLIENTID}
-      - AMADEUS_API_CLIENTSECRET=${AMADEUS_API_CLIENTSECRET}
-      - AMADEUS_API_BASEURL=https://test.api.amadeus.com
-    restart: unless-stopped
-    depends_on:
-      - globetrotter-services 
+networks:
+  globetrotter-network:
+    external: true
